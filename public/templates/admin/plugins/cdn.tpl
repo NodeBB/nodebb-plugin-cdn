@@ -4,12 +4,12 @@
 		<div class="col-sm-10 col-xs-12">
       <div class="checkbox">
 				<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-					<input class="mdl-switch__input" type="checkbox" id="enabled" />
+          <input class="mdl-switch__input" type="checkbox" id="enabled" <!-- IF settings.enabled -->checked<!-- ENDIF settings.enabled -->/>
 					<span class="mdl-switch__label"><strong>Enable CDN redirection</strong></span>
 				</label>
 			</div>
 			<div class="mdl-textfield mdl-js-textfield">
-        <input class="mdl-textfield__input" type="text" id="url">
+        <input class="mdl-textfield__input" type="text" id="url" value={{settings.url}}>
         <label class="mdl-textfield__label" for="sample1">https://example.com/</label>
       </div>
       <p>Must restart to apply changes</p>
