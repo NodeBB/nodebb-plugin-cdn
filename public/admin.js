@@ -8,7 +8,7 @@ define('admin/plugins/cdn', [], function () {
       enabled: $('#enabled').prop('checked'),
     };
 
-    $.get('/api/admin/plugins/calendar/save', { settings: JSON.stringify(settings) }, function () {
+    $.get('/api/admin/plugins/cdn/save', { settings: JSON.stringify(settings) }, function () {
       app.alertSuccess();
     });
   });
