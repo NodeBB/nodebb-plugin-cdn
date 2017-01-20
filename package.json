@@ -1,0 +1,35 @@
+{
+  "name": "nodebb-plugin-cdn",
+  "version": "1.0.0",
+  "description": "Makes it easy to configure a CDN for your NodeBB install",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nodebb/nodebb-plugin-cdn.git"
+  },
+  "keywords": [
+    "nodebb",
+    "plugin",
+    "cdn",
+    "cache"
+  ],
+  "author": "PitaJ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nodebb/nodebb-plugin-cdn/issues"
+  },
+  "homepage": "https://github.com/nodebb/nodebb-plugin-cdn#readme",
+  "dependencies": {
+    "async": "^2.1.4",
+    "maxcdn": "^0.2.2",
+    "nconf": "^0.8.4"
+  },
+  "devDependencies": {
+    "eslint": "^3.13.1",
+    "eslint-config-airbnb-base": "^11.0.1",
+    "eslint-plugin-import": "^2.2.0"
+  }
+}
