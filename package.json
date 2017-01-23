@@ -23,12 +23,14 @@
   },
   "homepage": "https://github.com/nodebb/nodebb-plugin-cdn#readme",
   "dependencies": {
-    "async": "^2.1.4",
-    "maxcdn": "^0.2.2"
+    "async": "^2.1.4"
   },
   "devDependencies": {
     "eslint": "^3.13.1",
     "eslint-config-airbnb-base": "^11.0.1",
     "eslint-plugin-import": "^2.2.0"
+  },
+  "nbbpm": {
+    "compatibility": "^1.5.0"
   }
 }
