@@ -32,7 +32,7 @@ server {
 
   location /plugins/ {
     root /home/saas/nodebb/build/public/;
-    try_files $uri $uri/ @nodebb;
+    try_files $uri @nodebb;
   }
 
   location / {
@@ -48,43 +48,37 @@ To do this, we will change the `/assets/` and `/plugins/` blocks to a RegExp mat
 ```
 location ~ ^/assets/[0-9]{13}/(.*) {
   root /home/saas/nodebb/;
-  try_files build/public/$1 build/public/$1/ public/$1 public/$1/ @nodebb;
+  try_files build/public/$1 public/$1 @nodebb;
 }
 
 location ~ ^/plugins/[0-9]{13}/(.*) {
   root /home/saas/nodebb/build/public/;
-  try_files plugins/$1 plugins/$1/ @nodebb;
+  try_files plugins/$1 @nodebb;
 }
 ```
 
 We also want to redirect other client requests of `/assets/` and `/plugins/` to the CDN:
 
 ```
-# loads $buster into the file
-include /home/saas/nodebb/build/nginx-cache-buster.conf;
+# loads $cacheBuster into the file
+include /home/saas/nodebb/build/cache-buster.conf;
 
 location /assets/ {
-  return 302 https://cdn.example.com/$buster/$uri;
+  return 302 https://cdn.example.com/$cacheBuster/$uri;
 }
 
 location /plugins/ {
-  return 302 https://cdn.example.com/$buster/$uri;
+  return 302 https://cdn.example.com/$cacheBuster/$uri;
 }
 ```
 
-And you can have a restart script like so, which sets the buster to a new value, reloads nginx, rebuilds NodeBB assets, and restarts NodeBB:
+You can install the [`entr` package](http://entrproject.org/), and use a command like this (executed in the background) to reload nginx whenever the cache buster file changes:
 
 ```
-#!/bin/bash
-
-node -p "'set \$buster ' + Date.now() + ';'" > nodebb/build/nginx-cache-buster.conf
-sudo service nginx reload
-cd nodebb
-./nodebb build
-./nodebb restart
+echo /home/saas/nodebb/build/cache-buster.conf | entr service nginx reload
 ```
 
-A cache buster like this is necessary otherwise the CDN will continue to serve old assets after new ones have been built. 
+A cache buster like this is necessary otherwise the CDN will continue to serve old assets after new ones have been built.
 
 ### Example Config File for Accelerating Redirects with nginx
 
@@ -121,31 +115,19 @@ server {
 
   set $cdn https://cdn.example.com;
 
-  # loads $buster into the file
-  include /home/saas/nodebb/build/nginx-cache-buster.conf;
+  # loads $cacheBuster into the file
+  include /home/saas/nodebb/build/cache-buster.conf;
 
   location ~ ^/assets/(.*) {
-    return 302 $cdn/assets/$buster/$1;
+    return 302 $cdn/assets/$cacheBuster/$1;
   }
 
   location ~ ^/plugins/(.*) {
-    return 302 $cdn/plugins/$buster/$1;
+    return 302 $cdn/plugins/$cacheBuster/$1;
   }
 
   location / {
     try_files /502.html @nodebb;
   }
 }
-```
-
-### Example Restart Script
-
-```
-#!/bin/bash
-
-node -p "'set \$buster ' + Date.now() + ';'" > nodebb/build/nginx-cache-buster.conf
-sudo service nginx reload
-cd nodebb
-./nodebb build
-./nodebb restart
 ```
