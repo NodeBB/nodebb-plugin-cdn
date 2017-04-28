@@ -1,6 +1,6 @@
 # Speeding Up Redirections with nginx
 
-This plugin works by redirecting requests to static assets to a cache-busted route on the CDN. This cache-busted route is at a subpath of `/assets` or `/plugins` on the CDN. The subpath's name is a string of 13 digits representing the epoch time integer, the number of milliseconds since *00:00:00 Coordinated Universal Time (UTC), Thursday, 1 January 1970*. This integer will be 13 digits until the year 2286 AD.
+This plugin works by redirecting requests to static assets to a cache-busted route on the CDN. This cache-busted route is at a subpath of `/assets` or `/plugins` on the CDN. The cache buster string is a random 11-character alphanumeric string stored in the file `build/cache-buster`.
 
 Here is an example nginx config file for NodeBB:
 
@@ -54,12 +54,12 @@ But this doesn't do anything to redirect client requests to the CDN, and will pa
 To do this, we will change the `/assets/` and `/plugins/` blocks to a RegExp matching a subpath with 13 digits:
 
 ```
-location ~ "^/assets/\d{13,}/(.*)" {
+location ~ "^/assets/[a-z0-9]{11}/(.*)" {
   root /home/saas/nodebb/;
   try_files /build/public/$1 /public/$1 @nodebb;
 }
 
-location ~ "^/plugins/\d{13,}/(.*)" {
+location ~ "^/plugins/[a-z0-9]{11}/(.*)" {
   root /home/saas/nodebb/build/public/;
   try_files /plugins/$1 @nodebb;
 }
@@ -78,10 +78,14 @@ location ~ ^/(assets|plugins)/(.*) {
 }
 ```
 
-You can install the [`entr` package](http://entrproject.org/), and use a command like this (executed in the background) to reload nginx whenever the cache buster file changes:
+You can install the [`entr` package](http://entrproject.org/), and use a scipt like this (executed in the background) to build `cache-buster.conf` and reload nginx whenever the cache buster file changes:
 
 ```
-echo /home/saas/nodebb/build/cache-buster.conf | entr service nginx reload
+reload() {
+  echo "set \$cacheBuster $(cat /home/saas/nodebb/build/cache-buster);" > /home/saas/nodebb/build/cache-buster.conf
+  service nginx reload
+}
+nohup echo /home/saas/nodebb/build/cache-buster | entr reload &> /dev/null &
 ```
 
 A cache buster like this is necessary otherwise nginx will continue to redirect to old assets after new ones have been built.
@@ -117,13 +121,13 @@ server {
     proxy_pass http://nodes;
   }
 
-  location ~ "^/assets/\d{13,}/(.*)" {
+  location ~ "^/assets/[a-z0-9]{11}/(.*)" {
     add_header Access-Control-Allow-Origin $scheme://$server_name;
     root /home/saas/nodebb/;
     try_files /build/public/$1 /public/$1 @nodebb;
   }
 
-  location ~ "^/plugins/\d{13,}/(.*)" {
+  location ~ "^/plugins/[a-z0-9]{11}/(.*)" {
     add_header Access-Control-Allow-Origin $scheme://$server_name;
     root /home/saas/nodebb/build/public/;
     try_files /plugins/$1 @nodebb;
