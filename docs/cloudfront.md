@@ -2,7 +2,7 @@
 
 ## Creating a new distribution
 
-In the [Cloudfront management interface](https://console.aws.amazon.com/cloudfront/home?#create-distribution:), create a new **Web Distribution**. 
+In the [Cloudfront management interface](https://console.aws.amazon.com/cloudfront/home?#create-distribution:), create a new **Web Distribution**.
 
 ### Origin Settings
 
@@ -16,7 +16,8 @@ In the [Cloudfront management interface](https://console.aws.amazon.com/cloudfro
 ### Default Cache Behavior Settings
 
 - *Viewer Protocol Policy*: if your site uses HTTPS, select `HTTPS only`. Otherwise, select `HTTP and HTTPS`
-- *Allowed HTTP methods*: `GET, HEAD`
+- *Allowed HTTP methods*: `GET, HEAD, OPTIONS`
+- *Cached HTTP Methods*: Check the `OPTIONS` box
 - *Forward Headers*: `None (Improves Caching)`
 - *Object Caching*: `Use Origin Cache Headers`
 - *Forward Cookies*: `None (Improves Caching)`
@@ -39,11 +40,15 @@ In the [Cloudfront management interface](https://console.aws.amazon.com/cloudfro
 
 ### Get the Cloudfront Domain Name
 
-In the [Cloudfront interface](https://console.aws.amazon.com/cloudfront/home), there is a list of distributions. Find the one you're using for NodeBB, and copy the **Domain Name** field. The domain name should look something like this: `dfxabcd935xus.cloudfront.net`. 
+In the [Cloudfront interface](https://console.aws.amazon.com/cloudfront/home), there is a list of distributions. Find the one you're using for NodeBB, and copy the **Domain Name** field. The domain name should look something like this: `dfxabcd935xus.cloudfront.net`.
+
+## Set up NodeBB
+
+In the NodeBB Admin Control Panel, navigate to *Settings* > *Advanced* and enter your NodeBB url in the **Access-Control-Allow-Origin** field. For instance, if you access your site at `http://example.com`, then put exactly that into the **Access-Control-Allow-Origin** field. In the **Access-Control-Allow-Headers** field, input `X-Requested-With`.
 
 ## Set up the plugin
 
-You can install the plugin via the ACP, or by running `npm install nodebb-plugin-cdn`. After doing so, activate the plugin and restart NodeBB. When NodeBB is restarted, go to the ACP and navigate to the CDN plugin settings page. On that page, there are two fields: a toggle for enabling the CDN redirection and a text field for entering the URL to the CDN.
+Install `nodebb-plugin-cdn`. After doing so, activate the plugin and restart NodeBB. When NodeBB is restarted, go to the ACP and navigate to the CDN plugin settings page. On that page, there are two fields: a toggle for enabling the CDN redirection and a text field for entering the URL to the CDN.
 
 First, set the CDN URL. If you used `HTTPS only` earlier, enter `https://[domain]`, using the domain you copied earlier in place of `[domain]`. If you didn't use `HTTPS only`, enter `http://[domain]` instead.
 
