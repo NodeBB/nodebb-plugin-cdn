@@ -46,6 +46,10 @@ In the [Cloudfront interface](https://console.aws.amazon.com/cloudfront/home), t
 
 In the NodeBB Admin Control Panel, navigate to *Settings* > *Advanced* and enter your NodeBB url in the **Access-Control-Allow-Origin** field. For instance, if you access your site at `http://example.com`, then put exactly that into the **Access-Control-Allow-Origin** field. In the **Access-Control-Allow-Headers** field, input `X-Requested-With`.
 
+#### Private Uploads
+
+If you have the **Make uploaded files private** setting under *ACP* > *Settings* > *Uploads* enabled, then this plugin will not redirect users to the CDN for any uploaded files, instead serving them directly. So you must choose between Private Uploads and serving them through the CDN.
+
 ## Set up the plugin
 
 Install `nodebb-plugin-cdn`. After doing so, activate the plugin and restart NodeBB. When NodeBB is restarted, go to the ACP and navigate to the CDN plugin settings page. On that page, there are two fields: a toggle for enabling the CDN redirection and a text field for entering the URL to the CDN.
