@@ -1,6 +1,6 @@
 {
   "name": "nodebb-plugin-cdn",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Makes it easy to configure a CDN for your NodeBB install",
   "main": "lib/index.js",
   "scripts": {
