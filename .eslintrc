@@ -5,6 +5,7 @@
     "sourceType": "script"
   },
   "rules": {
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "operator-linebreak": ["error", "after"]
   }
 }

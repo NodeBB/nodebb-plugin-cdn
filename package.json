@@ -4,7 +4,8 @@
   "description": "Makes it easy to configure a CDN for your NodeBB install",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -23,12 +24,12 @@
   },
   "homepage": "https://github.com/nodebb/nodebb-plugin-cdn#readme",
   "dependencies": {
-    "async": "^2.1.4"
+    "async": "^3.1.0"
   },
   "devDependencies": {
-    "eslint": "^3.13.1",
-    "eslint-config-airbnb-base": "^11.0.1",
-    "eslint-plugin-import": "^2.2.0"
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3"
   },
   "nbbpm": {
     "compatibility": "^1.5.0"
