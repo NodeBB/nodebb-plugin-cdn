@@ -1,6 +1,6 @@
 {
   "name": "nodebb-plugin-cdn",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Makes it easy to configure a CDN for your NodeBB install",
   "main": "lib/index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "url": "https://github.com/nodebb/nodebb-plugin-cdn/issues"
   },
   "homepage": "https://github.com/nodebb/nodebb-plugin-cdn#readme",
-  "dependencies": {  },
+  "dependencies": {},
   "devDependencies": {
     "eslint": "8.36.0",
     "eslint-config-nodebb": "0.2.1",
